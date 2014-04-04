@@ -12,7 +12,6 @@ namespace MvcApplication1.Controllers
         {
             // test my file
 
-
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();
@@ -23,6 +22,7 @@ namespace MvcApplication1.Controllers
             ViewBag.Message = "Your app description page.";
 
             return View();
+
         }
 
         public ActionResult Contact()
