@@ -11,6 +11,8 @@ namespace MvcApplication1.Controllers
         public ActionResult Index()
         {
             // test my file
+
+
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();
