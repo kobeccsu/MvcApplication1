@@ -88,6 +88,7 @@ namespace MvcApplication1.Models
         public string ConfirmPassword { get; set; }
     }
 
+
     public class ExternalLogin
     {
         public string Provider { get; set; }
