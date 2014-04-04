@@ -17,7 +17,7 @@ namespace MvcApplication1.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
-
+        // fuck do you receive
 
         //
         // GET: /Account/Login
