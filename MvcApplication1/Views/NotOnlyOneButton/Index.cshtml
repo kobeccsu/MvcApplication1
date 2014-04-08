@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>欢迎你周磊</h2>
+@*@Html.Action("Index", "NotOnlyOneButton", null)*@
+@using(Html.BeginForm("Insert", "NotOnlyOneButton", FormMethod.Post, null)){
+    <input type="submit" alt="提交" />
+}
+
+    
