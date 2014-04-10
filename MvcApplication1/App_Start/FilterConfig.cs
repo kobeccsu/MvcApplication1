@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using MvcApplication1.Filters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MvcApplication1
@@ -8,6 +9,7 @@ namespace MvcApplication1
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new MyActionFilterAttribute()); // 权限控制
         }
     }
 }
