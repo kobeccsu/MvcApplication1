@@ -9,4 +9,11 @@
     <input type="submit" alt="提交" />
 }
 
+<div>
+    <div id="header">
+        <span>表名:</span>
+        <span>@Html.DropDownList("allTables", (IEnumerable<SelectListItem>)ViewData["tables"])</span>
+    </div>
+</div>
+
     
