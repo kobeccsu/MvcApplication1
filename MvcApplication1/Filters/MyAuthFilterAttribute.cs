@@ -15,10 +15,12 @@ namespace MvcApplication1.Filters
         {
             //base.OnAuthorization(filterContext);
             //var temp = "";
-            if (filterContext.RouteData.Values["controller"].ToString() != "Account") // 排除自己，否则会无限循环
-            {
-                filterContext.Result = new RedirectResult(new UrlHelper(filterContext.RequestContext).Action("Login", "Account"));
-            }
+            
+            // 暂时注释，后续做好了所有权限的控制，就放开
+            //if (filterContext.RouteData.Values["controller"].ToString() != "Account") // 排除自己，否则会无限循环
+            //{
+            //    filterContext.Result = new RedirectResult(new UrlHelper(filterContext.RequestContext).Action("Login", "Account"));
+            //}
         }
     }
 }
