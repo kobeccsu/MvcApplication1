@@ -237,6 +237,7 @@
     <Compile Include="Customer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAL\AccountDAL.cs" />
     <Compile Include="DatabaseLog.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -271,6 +272,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Location.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model1.Context.cs">
@@ -416,6 +420,10 @@
     <Compile Include="UnitMeasure.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserRight.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Util\SecurityUtil.cs" />
     <Compile Include="Vendor.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

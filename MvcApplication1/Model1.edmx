@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AdventureWorks2012Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AdventureWorks2012Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AWBuildVersion">
           <Key>
             <PropertyRef Name="SystemInformationID" />
@@ -40,6 +40,24 @@
           <Property Name="ErrorProcedure" Type="nvarchar" MaxLength="126" />
           <Property Name="ErrorLine" Type="int" />
           <Property Name="ErrorMessage" Type="nvarchar" MaxLength="4000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRight">
+          <Key>
+            <PropertyRef Name="username" />
+            <PropertyRef Name="controller" />
+            <PropertyRef Name="action" />
+          </Key>
+          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="controller" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="action" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="isAllow" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -280,24 +298,6 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--生成过程中发现错误:
-警告 6005: 目标实体框架版本目前不支持数据类型“hierarchyid”；已排除表“DocumentNode”中的列“AdventureWorks2012.Production.Document”。
-警告 6031: 已排除表/视图“AdventureWorks2012.Production.Document”中的列“DocumentNode”，该列是键列。已排除该表/视图。请在架构文件中修复该实体，并取消注释。
-        <EntityType Name="Document">
-          <Property Name="DocumentLevel" Type="smallint" StoreGeneratedPattern="Computed" />
-          <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Owner" Type="int" Nullable="false" />
-          <Property Name="FolderFlag" Type="bit" Nullable="false" />
-          <Property Name="FileName" Type="nvarchar" MaxLength="400" Nullable="false" />
-          <Property Name="FileExtension" Type="nvarchar" MaxLength="8" Nullable="false" />
-          <Property Name="Revision" Type="nchar" MaxLength="5" Nullable="false" />
-          <Property Name="ChangeNumber" Type="int" Nullable="false" />
-          <Property Name="Status" Type="tinyint" Nullable="false" />
-          <Property Name="DocumentSummary" Type="nvarchar(max)" />
-          <Property Name="Document" Type="varbinary(max)" />
-          <Property Name="rowguid" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
-        </EntityType>-->
         <EntityType Name="Illustration">
           <Key>
             <PropertyRef Name="IllustrationID" />
@@ -1082,9 +1082,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--生成过程中发现错误:
-错误 6004: 某个关系引用了表“AdventureWorks2012.Production.Document”，但找不到该表。
-        <Association Name="FK_Document_Employee_Owner" />-->
         <Association Name="FK_EmailAddress_Person_BusinessEntityID">
           <End Role="Person" Type="Self.Person" Multiplicity="1" />
           <End Role="EmailAddress" Type="Self.EmailAddress" Multiplicity="*" />
@@ -1301,9 +1298,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--生成过程中发现错误:
-错误 6004: 某个关系引用了表“AdventureWorks2012.Production.Document”，但找不到该表。
-        <Association Name="FK_ProductDocument_Document_DocumentNode" />-->
         <Association Name="FK_ProductDocument_Product_ProductID">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="ProductDocument" Type="Self.ProductDocument" Multiplicity="0..1" />
@@ -1950,6 +1944,8 @@
           <EntitySet Name="AWBuildVersion" EntityType="Self.AWBuildVersion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DatabaseLog" EntityType="Self.DatabaseLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ErrorLog" EntityType="Self.ErrorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRight" EntityType="Self.UserRight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="HumanResources" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="HumanResources" store:Type="Tables" />
           <EntitySet Name="EmployeeDepartmentHistory" EntityType="Self.EmployeeDepartmentHistory" Schema="HumanResources" store:Type="Tables" />
@@ -2375,8 +2371,7 @@
             <End Role="WorkOrderRouting" EntitySet="WorkOrderRouting" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AdventureWorks2012Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4891,7 +4886,27 @@
             <End Role="SpecialOffer" EntitySet="SpecialOffer" />
             <End Role="SpecialOfferProduct" EntitySet="SpecialOfferProduct" />
           </AssociationSet>
+          <EntitySet Name="Login" EntityType="AdventureWorks2012Model.Login" />
+          <EntitySet Name="UserRight" EntityType="AdventureWorks2012Model.UserRight" />
         </EntityContainer>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserRight">
+          <Key>
+            <PropertyRef Name="username" />
+            <PropertyRef Name="controller" />
+            <PropertyRef Name="action" />
+          </Key>
+          <Property Name="username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="controller" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="isAllow" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -5785,6 +5800,24 @@
               <MappingFragment StoreEntitySet="ProductDocument">
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login">
+            <EntityTypeMapping TypeName="AdventureWorks2012Model.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRight">
+            <EntityTypeMapping TypeName="AdventureWorks2012Model.UserRight">
+              <MappingFragment StoreEntitySet="UserRight">
+                <ScalarProperty Name="isAllow" ColumnName="isAllow" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="controller" ColumnName="controller" />
+                <ScalarProperty Name="username" ColumnName="username" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

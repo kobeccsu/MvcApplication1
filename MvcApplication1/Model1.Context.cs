@@ -95,5 +95,7 @@ namespace MvcApplication1
         public virtual DbSet<SpecialOfferProduct> SpecialOfferProduct { get; set; }
         public virtual DbSet<Store> Store { get; set; }
         public virtual DbSet<ProductDocument> ProductDocument { get; set; }
+        public virtual DbSet<Login> Login { get; set; }
+        public virtual DbSet<UserRight> UserRight { get; set; }
     }
 }

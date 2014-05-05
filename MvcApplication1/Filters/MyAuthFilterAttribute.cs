@@ -14,8 +14,8 @@ namespace MvcApplication1.Filters
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             //base.OnAuthorization(filterContext);
-            var temp = "";
-            if (filterContext.RouteData.Values["controller"].ToString() != "Account")
+            //var temp = "";
+            if (filterContext.RouteData.Values["controller"].ToString() != "Account") // 排除自己，否则会无限循环
             {
                 filterContext.Result = new RedirectResult(new UrlHelper(filterContext.RequestContext).Action("Login", "Account"));
             }

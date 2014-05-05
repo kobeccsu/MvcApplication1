@@ -10,6 +10,8 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using MvcApplication1.Filters;
 using MvcApplication1.Models;
+using MvcApplication1.Util;
+using MvcApplication1.DAL;
 
 namespace MvcApplication1.Controllers
 {
@@ -37,13 +39,22 @@ namespace MvcApplication1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
-            {
-                return RedirectToLocal(returnUrl);
-            }
+            //if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            //{
+            //    return RedirectToLocal(returnUrl);
+            //}
+            AccountDAL dal = new AccountDAL();
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            ModelState.AddModelError("", "提供的用户名或密码不正确。");
+            if (dal.IsAuthenticated(model.UserName, SecurityUtil.GetMD5Password(model.Password)))
+            {
+                FormsAuthentication.SetAuthCookie(model.UserName, true); 
+            }
+            else
+            {   
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                ModelState.AddModelError("", "提供的用户名或密码不正确。");
+            }
+          
             return View(model);
         }
 
