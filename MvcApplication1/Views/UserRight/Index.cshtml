@@ -2,4 +2,26 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>权限管理页面</h2>
+<hr />
+<table cellpadding="1" cellspacing="1">
+    <tr>
+        <th>是否授权</th>
+        <th>控制器名称</th>
+        <th>事件名称</th>
+    </tr>
+@foreach (var item in ViewBag.Data)
+{
+    <tr>
+        <td>
+            <input type="checkbox" />
+        </td>
+        <td>
+            @(item.IndexOf("---") != -1 ? item.Substring(0, item.IndexOf("---")) : item)
+        </td>
+        <td>
+            @(item.IndexOf("---") != -1 ? item.Substring(item.IndexOf("---"), item.Length - item.IndexOf("---")) : item)
+        </td>
+    </tr>
+}
+</table>
